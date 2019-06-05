@@ -1,159 +1,122 @@
 #include <iostream>
+#include <algorithm>
 #include <cassert>
 #include "grid.hpp"
 
 using namespace std;
 
-sdk_sector::sdk_sector(){
-
-}
-
-sdk_sector::~sdk_sector(){
-
-}
-
-void sdk_sector::add(sdk_cell* cell){
-  cells_refs.push_back(cell);
-}
-
-void sdk_sector::update(int value, action a){
-  for(int i=0; i<cells_refs.size(); i++){
-    cells_refs[i]->update(value, a);
-  }
-}
-
-//prints the degrees of liberty of each cell in sector
-void sdk_sector::print_cells_details(){
-  for(int i=0; i<cells_refs.size(); i++){
-    cout<<"cell "<<i<<endl;
-    cells_refs[i]->print();
-  }
-}
-
-//prints the sector's cells in a matrix display
-void sdk_sector::print(){
-  for(int i=0; i<3; i++){
-    for(int j=0; j<3; j++){
-      cout<<cells_refs[i*3+j]->current_value()<<" ";
+sdk_grid::sdk_grid(vector<int>& from) : data(from) {
+    for(int i=0; i<81; i++){
+        domains.push_back("123456789");
     }
-    cout<<endl;
-  }
-}
-
-
-sdk_grid::sdk_grid(vector<int>& from){
-  for(int i=0; i<9;i++){
-    sdk_sector sector;
-    sectors.push_back(sector);
-  }
-  cout<<"sectors init: "<<endl;
-  
-  for(int i=0; i<9; i++){
-    for(int j=0; j<9; j++){
-      sdk_cell cell;
-      if(from[i*9+j]==0){
-	cell.set_current_value(from[i*9+j]);
-	cell.set_fixed(false);
-      }
-      else if(from[i*9+j] > 0){
-	cell.set_fixed(true);
-	cell.set_current_value(from[i*9+j]);
-      }else{
-	return;
-      }
-      matrix.push_back(cell);
+    for(int i=0; i<81; i++){
+        if(data[i] != 0){
+            int row = i/9;
+            int column = i%9;
+            string val(1, '0' + data[i]);
+            domains[i] = val;
+            if (!propagate(row, column, data[i])){
+                throw "sudoku grid not coherent";
+            }
+        }
     }
-  }
+}
 
-  //fill sectors with refs
-  for(int i=0; i<9; i++){
-    for(int j=0; j<9; j++){
-      int sector_i=i/3;
-      int sector_j=j/3;
-      sectors[sector_i*3+sector_j].add(&matrix[i*9+j]);
+sdk_grid::sdk_grid(const sdk_grid& from): data(from.data), domains(from.domains) {
+}
+
+int findChar(string original, char c){
+    int index = -1;
+    for(int i=0; i<original.size(); i++){
+        if(original[i] == c){
+            index = i;
+        }
     }
-  }
+    return index;
+}
 
-  //update the cells to take the inputs in consideration
-  for(int i=0; i<9; i++){
-    for(int j=0; j<9; j++){
-      if(matrix[i*9+j].current_value() != 0){
-	update(i,j,matrix[i*9+j].current_value(),DESTROY);
-      }
+bool sdk_grid::propagate_column(int column, int value) {
+    for(int row=0; row<9; row++){
+        string temp1 = domains[row*9 + column];
+        char val = '0' + value;
+        int eraseIndex = findChar(temp1, val);
+        if(eraseIndex >= 0){
+            string temp2 = temp1.erase(eraseIndex, 1);
+            domains[row*9 + column] = temp2;
+        } else {
+            return false;
+        }
     }
-  }
+    return true;
 }
 
-sdk_grid::~sdk_grid(){
-
-}
-
-void sdk_grid::update(int i, int j, int value, action a){
-  update_column(j,value,a);
-  update_row(i,value,a);
-  int sector_i = i/3;
-  int sector_j = j/3;
-  //cout<<"update sector("<<sector_i<<","<<sector_j<<"): "<<endl;
-  update_sector(sectors[sector_i*3+sector_j],value,a);
-}
-
-void sdk_grid::update_column(int j, int value, action a){
-  //cout<<"update column "<<j<<endl;
-  for(int i=0; i<9; i++){
-    matrix[i*9+j].update(value,a);
-  }
-}
-
-void sdk_grid::update_row(int i, int value, action a){
-  //cout<<"update row "<<i<<endl;
-  for(int j=0; j<9; j++){
-    matrix[i*9+j].update(value,a);
-  }
-}
-
-void sdk_grid::update_sector(sdk_sector& sector, int value, action a){
-  sector.update(value,a);
-}
-
-//prints all the sudoku grid in a matrix display
-void sdk_grid::print(){
-  for(int i=0; i<9; i++){
-    for(int j=0; j<9; j++){
-      cout<<matrix[i*9+j].current_value()<<" ";
+bool sdk_grid::propagate_row(int row, int value) {
+    for(int column=0; column<9; column++){
+        string temp1 = domains[row*9 + column];
+        char val = '0' + value;
+        int eraseIndex = findChar(temp1, val);
+        if(eraseIndex >= 0){
+            string temp2 = temp1.erase(eraseIndex, 1);
+            domains[row*9 + column] = temp2;
+        } else {
+            return false;
+        }
     }
-    cout<<endl;
-  }
+    return true;
 }
 
-//prints the details of each sector (is not necessarily important, use print_cells instead for all matrix )
-void sdk_grid::print_sectors_details(){
-  cout<<endl<<"sectors: "<<endl;
-  for(int i=0; i<sectors.size(); i++){
-    cout<<"sector "<<i<<" :"<<endl;
-    sectors[i].print_cells_details();
-    cout<<endl;
-  }
+bool sdk_grid::propagate_sector(int row, int column, int value) {
+    int sectors[] = {
+        0,  1,  2,  9,  10, 11, 18, 19, 20,
+        3,  4,  5,  12, 13, 14, 21, 22, 23,
+        6,  7,  8,  15, 16, 17, 24, 25, 26,
+        27, 28, 29, 36, 37, 38, 45, 46, 47,
+        30, 31, 32, 39, 40, 41, 48, 49, 50,
+        33, 34, 35, 42, 43, 44, 51, 52, 53,
+        54, 55, 56, 63, 64, 65, 72, 73, 74,
+        57, 58, 59, 66, 67, 68, 75, 76, 77,
+        60, 61, 62, 69, 70, 71, 78, 79, 80
+    };
+    int sector_row = row / 3;
+    int sector_column = column / 3;
+    int sector_index = sector_row * 3 + sector_column;
+    for(int i = 0; i < 9; i++){
+        string temp1 = domains[sectors[9*sector_index + i]];
+        char val = '0' + value;
+        int eraseIndex = findChar(temp1, val);
+        if(eraseIndex >= 0){
+            string temp2 = temp1.erase(remove(temp1.begin(), temp1.end(), val), temp1.end);
+            domains[sectors[9*sector_index + i]] = temp2;
+        } else {
+            return false;
+        }
+    }
+    return true;
 }
 
-//prints all the submatrix in each sector
-void sdk_grid::print_sectors(){
-  for(int i=0; i<sectors.size(); i++){
-    cout<<endl<<"sector("<<i<<"):"<<endl;
-    sectors[i].print();
-    cout<<endl;
-  }
+bool sdk_grid::propagate(int row, int column, int value){
+    return propagate_column(column, value) &&
+        propagate_row(row, value) &&
+        propagate_sector(row, column, value);
 }
 
-//prints the details of each cell
-void sdk_grid::print_cells(int number){
-  assert(number<matrix.size());
-  for(int i=0; i<number; i++){
-    cout<<"cell "<<i<<endl;
-    matrix[i].print();
-    cout<<endl;
-  }
+bool sdk_grid::set(int index, int value){
+    data[index] = value;
+    string strVal(1, '0' + value);
+    domains[index] = strVal;
+    int row = index / 9;
+    int column = index % 9;
+    return propagate(row, column, value);
 }
 
-sdk_cell& sdk_grid::cell_at(int index){
-  return matrix[index];
+int sdk_grid::get(int index) const{
+    return data[index];
+}
+
+string sdk_grid::getDomain(int index) const{
+    return domains[index];
+}
+
+vector<int> sdk_grid::getData() const{
+    return vector<int>(data);
 }

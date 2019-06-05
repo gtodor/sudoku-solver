@@ -4,69 +4,52 @@
 
 using namespace std;
 
-sdk_solver::sdk_solver(sdk_grid& grid): m_grid(grid),m_index(0){
-  while(m_grid.cell_at(m_index).fixed()){
-    m_index++;
-  }
-}
-
-sdk_solver::~sdk_solver(){
-
-}
-
-int sdk_solver::index(){
-  return m_index;
-}
-
-bool sdk_solver::solve(){
-  if(m_index == 81){
-    //this is a solution
-    //for now just print it
-    cout<<"solution:"<<endl;
-    m_grid.print();
-    cout<<endl;
-    return true;
-  }else{
-    vector<int> degrees = m_grid.cell_at(m_index).freedom_degrees();
-    bool found=false;
-    for(int i=0; i<degrees.size(); i++){
-      //sleep(1);
-      if(degrees[i] == 3){
-	m_grid.cell_at(m_index).set_current_value(i+1);
-	int gridi=m_index/9;
-	int gridj=m_index%9;
-	m_grid.update(gridi,gridj,i+1,DESTROY);
-	int original = m_index;
-	do{
-	  m_index++;
-	  if(m_index == 81){
-	    cout<<"solution:"<<endl;
-	    m_grid.print();
-	    cout<<endl;
-	    return true;
-	  }
-	}while(m_grid.cell_at(m_index).fixed() == true);
-	//m_grid.print();
-	//cout<<endl;
-	//m_grid.print_cells(3);
-	if(solve()){
-	  found=true;
-	  m_index=original;
-	  m_grid.cell_at(m_index).set_current_value(0);
-	  m_grid.update(gridi,gridj,i+1,ADD);
-	  
-	}else{
-	  m_index=original;
-	  m_grid.cell_at(m_index).set_current_value(0);
-	  m_grid.update(gridi,gridj,i+1,ADD);
-	}
-      }
+void sdk_solver::solve(sdk_grid& grid){
+    int index = 0;
+    while(index < 81 && grid.get(index) != 0){
+        index++;
     }
-    return found;
-  }
-    
+    solve(grid, index);
 }
 
-void sdk_solver::print(){
-  m_grid.print();
+void print_solution(vector<int> data){
+    for(int i=0; i<9; i++){
+        for(int j=0; j<9; j++){
+            cout<<data[i*9+j]<<" ";
+        }
+        cout<<endl;
+    }
+    cout<<endl;
+}
+
+void sdk_solver::solve(sdk_grid& grid, int index){
+    if(index == 81){
+        print_solution(grid.getData());
+        solutions.push(grid.getData());
+    }else{
+        string domain = grid.getDomain(index);
+        for(unsigned int i=0; i<=domain.size(); i++){
+            sdk_grid tmp_grid(grid);
+            int tmp_index = index;
+            int value = domain[i] - '0';
+
+            if(tmp_grid.set(tmp_index, value)){ 
+                print_solution(tmp_grid.getData());
+                do{
+                    tmp_index++;
+                }while(tmp_index < 81 && tmp_grid.get(tmp_index) != 0);
+                solve(tmp_grid, tmp_index);
+            }
+        }
+    }
+}
+
+bool sdk_solver::hasSolutions() const{
+    return !solutions.empty();
+}
+
+std::vector<int> sdk_solver::popSolution(){
+    std::vector<int> solution = solutions.front();
+    solutions.pop();
+    return solution;
 }

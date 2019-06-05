@@ -1,36 +1,24 @@
 #ifndef GRID_HPP
 #define GRID_HPP
 
-#include "cell.hpp"
-
-class sdk_sector{
-private:
-  std::vector<sdk_cell*> cells_refs;
-public:
-  sdk_sector();
-  ~sdk_sector();
-  void add(sdk_cell* cell);
-  void update(int value, action a);
-  void print();
-  void print_cells_details();
-};
+#include <vector>
+#include <string>
 
 class sdk_grid{
 private:
-  std::vector<sdk_cell> matrix;
-  std::vector<sdk_sector> sectors;
-  void update_column(int j, int value, action a);
-  void update_row(int i, int value, action a);
-  void update_sector(sdk_sector& sector, int value, action a);
+  std::vector<int> data;
+  std::vector<string> domains;
+  bool propagate_column(int column, int value);
+  bool propagate_row(int row, int value);
+  bool propagate_sector(int row, int column, int value);
+  bool propagate(int row, int column, int value);
 public:
   sdk_grid(std::vector<int>& from);
-  ~sdk_grid();
-  sdk_cell& cell_at(int index);
-  void update(int i, int j, int value, action a);
-  void print();
-  void print_sectors_details();
-  void print_cells(int number);
-  void print_sectors();
+  sdk_grid(const sdk_grid& from);
+  bool set(int index, int value);
+  int get(int index) const;
+  std::string getDomain(int index) const;
+  std::vector<int> getData() const;
 };
 
 
