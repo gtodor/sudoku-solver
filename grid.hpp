@@ -3,22 +3,23 @@
 
 #include <vector>
 #include <string>
+#include "cell.hpp"
 
-class sdk_grid{
-private:
-  std::vector<int> data;
-  std::vector<string> domains;
-  bool propagate_column(int column, int value);
-  bool propagate_row(int row, int value);
-  bool propagate_sector(int row, int column, int value);
-  bool propagate(int row, int column, int value);
+class SDK_Grid{
+
+  std::vector<SDK_Cell> data;
+  bool propagateRow(int row, int value);
+  bool propagateColumn(int column, int value);
+  bool propagateSector(int sector, int value);
 public:
-  sdk_grid(std::vector<int>& from);
-  sdk_grid(const sdk_grid& from);
-  bool set(int index, int value);
-  int get(int index) const;
-  std::string getDomain(int index) const;
-  std::vector<int> getData() const;
+  SDK_Grid(std::vector<int>& from);
+  SDK_Grid(const SDK_Grid& from);
+  bool propagate(int row, int column, int sector, int value);
+  bool isCompleted();
+  void set(int row, int column, int value);
+  void print();
+  std::vector<int> getSingleValuedDomainCellsIndexes();
+  bool tryToSetSolution(int index);
 };
 
 

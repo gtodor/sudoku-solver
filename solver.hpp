@@ -4,13 +4,13 @@
 #include "grid.hpp"
 #include <queue>
 
-class sdk_solver{
+class SDK_Solver{
 private:
-  std::queue<std::vector<int>> solutions;//when you find a solution you copy the current state of the grid in a new grid that you push in solutions
-  void solve(sdk_grid& grid, int index);
+  std::queue<SDK_Grid> solutions;
+  void solve(SDK_Grid& grid, int index);
 public:
-  void solve(sdk_grid& grid);
-  std::vector<int> popSolution();
+  void solve(SDK_Grid& grid);
+  SDK_Grid popSolution();
   bool hasSolutions() const;
 };
 
