@@ -38,8 +38,6 @@ SDK_Grid::SDK_Grid(const SDK_Grid& from) : data(from.data) {}
 bool SDK_Grid::propagateColumn(int column, int value) {
   for(int row=0; row<9; row++){
     if(!data[row*9+column].removeFromDomain(value)) {
-      cout<<"error at row "<<row<<endl;
-      data[row*9+column].print();
       return false;
     }
   }
@@ -106,9 +104,22 @@ void SDK_Grid::set(int row, int column, int value) {
 
 vector<int> SDK_Grid::getSingleValuedDomainCellsIndexes() {
   vector<int> result;
+  for (int index=0; index<81; index++) {
+    if (data[index].isDomainSingleValued()) {
+      result.push_back(index);
+    }
+  }
   return result;
 }
 
-bool SDK_Grid::tryToSetSolution(int index){
-  return false;
+void SDK_Grid::tryToSetSolutionInSingleValuedDomain(int index){
+  if (data[index].tryToSetSolutionInSingleValuedDomain()) {
+    int solution = data[index].getSolution();
+    int row = index / 9;
+    int column = index % 9;
+    int sector = data[index].getSector();
+    if (!propagate(row, column, sector, solution)){
+      throw "ERROR: this value is not valid";
+    }
+  }
 }

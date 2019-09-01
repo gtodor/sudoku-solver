@@ -19,7 +19,7 @@ public:
   void set(int row, int column, int value);
   void print();
   std::vector<int> getSingleValuedDomainCellsIndexes();
-  bool tryToSetSolution(int index);
+  void tryToSetSolutionInSingleValuedDomain(int index);
 };
 
 

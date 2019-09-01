@@ -54,3 +54,16 @@ void SDK_Cell::print() {
     domain.print();
   }
 }
+
+bool SDK_Cell::isDomainSingleValued(){
+  return domain.isSingleValued();
+}
+
+bool SDK_Cell::tryToSetSolutionInSingleValuedDomain() {
+  if (!domain.isSingleValued()) {
+    return false;
+  }
+  solution = domain.getPossibleSolution();
+  fixed = true;
+  return true;
+}

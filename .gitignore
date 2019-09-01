@@ -1,3 +1,4 @@
 *.o
 sudoku_solver
 .vscode
+ext/.vscode

@@ -14,9 +14,10 @@ void SDK_Solver::solve(SDK_Grid& grid){
   vector<int> singleValuedDomainCellsIndexes = copyGrid.getSingleValuedDomainCellsIndexes();
   while(!singleValuedDomainCellsIndexes.empty()){
     for(int index : singleValuedDomainCellsIndexes){
-      copyGrid.tryToSetSolution(index);
+      copyGrid.tryToSetSolutionInSingleValuedDomain(index);
     }
     if (copyGrid.isCompleted()){
+      cout<<"solution found"<<endl;
       solutions.push(copyGrid);
       return;
     }

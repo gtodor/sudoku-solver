@@ -60,3 +60,6 @@ void SDK_Domain::print(){
 }
   
   
+bool SDK_Domain::isSingleValued() {
+  return nonZeroValues == 1;
+}

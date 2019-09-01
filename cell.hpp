@@ -20,6 +20,8 @@ public:
   void setSolution(int solution);
   int getSolution();
   void print();
+  bool isDomainSingleValued();
+  bool tryToSetSolutionInSingleValuedDomain();
 };
 
 #endif //CELL_HPP

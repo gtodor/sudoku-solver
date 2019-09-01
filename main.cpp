@@ -38,24 +38,15 @@ int main(){
       SDK_Grid grid(matrix);
       cout<<"grid finished building"<<endl;
       grid.print();
+
+      cout<<"solving sudoku"<<endl;
+      SDK_Solver solver;
+      solver.solve(grid);
+      SDK_Grid solution = solver.popSolution();
+      solution.print();
     } catch (const char* e) {
       cout<<"exception: "<<e<<endl;
     }
-
-    // sdk_solver solver;
-    // solver.solve(grid);
-    // if(solver.hasSolutions() == false){
-    //     cout<<"problem does not have solutions"<<endl;
-    // } else {
-    //     cout<<endl;
-    //     vector<int> solution = solver.popSolution();
-    //     for(int i = 0; i<9; i++){
-    //         for(int j = 0; j<9; j++){
-    //             cout<<solution[i*9+j]<<" ";
-    //         }
-    //         cout<<endl;
-    //     }
-    // }
 
     return 0;
 }

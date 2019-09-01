@@ -14,6 +14,7 @@ public:
   int getPossibleSolution();
   bool isEmpty();
   void print();
+  bool isSingleValued();
 };
 
 #endif //DOMAIN_HPP
