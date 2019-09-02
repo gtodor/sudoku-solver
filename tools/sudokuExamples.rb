@@ -18,7 +18,6 @@ Net::HTTP::start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http
     solution = parsed['desc'][1]
     file.puts sudoku
     file.puts solution
-    file.puts
   end
 end
 

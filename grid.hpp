@@ -18,6 +18,7 @@ public:
   bool isCompleted();
   void set(int row, int column, int value);
   void print();
+  std::string toString();
   std::vector<int> getSingleValuedDomainCellsIndexes();
   void tryToSetSolutionInSingleValuedDomain(int index);
 };

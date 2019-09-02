@@ -23,6 +23,7 @@ void SDK_Solver::solve(SDK_Grid& grid){
     }
     singleValuedDomainCellsIndexes = copyGrid.getSingleValuedDomainCellsIndexes();
   }
+  copyGrid.print();
   //at this point there are no more single valued domains and the sudoku is not completed
   //search for pairs and update the grid;
   //solve(grid, index);

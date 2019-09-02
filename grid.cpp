@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cassert>
+#include <sstream>
 #include "grid.hpp"
 
 using namespace std;
@@ -122,4 +123,12 @@ void SDK_Grid::tryToSetSolutionInSingleValuedDomain(int index){
       throw "ERROR: this value is not valid";
     }
   }
+}
+
+string SDK_Grid::toString() {
+  stringstream result;
+  for (int index = 0; index < 81; index++) {
+    result << data[index].getSolution();
+  }
+  return result.str();
 }
