@@ -17,6 +17,15 @@ bool SDK_Domain::isEmpty() {
   return false;
 }
 
+void SDK_Domain::reduceToSingleValue(int value) {
+  for (int i=0; i<9; i++) {
+    if (i != value - 1) {
+      domain[i] = 0;
+      nonZeroValues--;
+    }
+  }
+}
+
 bool SDK_Domain::remove(int value) {
   if (isEmpty()){
     return false;

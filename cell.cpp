@@ -33,6 +33,7 @@ bool SDK_Cell::isFixed() {
   
 void SDK_Cell::setSolution(int solution) {
   this->solution = solution;
+  domain.reduceToSingleValue(solution);
   fixed = true;
 }
 
@@ -46,7 +47,9 @@ int SDK_Cell::getPossibleSolution() {
 
 void SDK_Cell::print() {
   if(isFixed()){
-    cout<<solution;
+    const string mangenta("\033[0;35m");
+    const string reset("\033[0m");
+    cout<<mangenta<<solution<<reset;
     for (int i=0; i<8; i++){
       cout<< " ";
     }

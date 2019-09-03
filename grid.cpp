@@ -21,14 +21,19 @@ SDK_Grid::SDK_Grid(vector<int>& from) {
       data.push_back(cell);
     }
   }
+  // print();
+  // cout<<"------------------------------------------------------------"<<endl;
   for(int row=0; row<9; row++){
     for(int column=0; column<9; column++) {
       if(data[row*9+column].isFixed()){
 	int solution = data[row*9+column].getSolution();
 	int sector = data[row*9+column].getSector();
+	// cout<<"removing "<<solution<<" at "<<row<<" "<<column<<endl<<endl;
 	if (!propagate(row, column, sector, solution)) {
 	  throw "input data is wrong";
 	}
+	// print();
+	// cout<<"----------------------------------------------------------------"<<endl;
       }
     }
   }
@@ -106,7 +111,7 @@ void SDK_Grid::set(int row, int column, int value) {
 vector<int> SDK_Grid::getSingleValuedDomainCellsIndexes() {
   vector<int> result;
   for (int index=0; index<81; index++) {
-    if (data[index].isDomainSingleValued()) {
+    if (data[index].isDomainSingleValued() && !data[index].isFixed()) {
       result.push_back(index);
     }
   }
@@ -119,9 +124,11 @@ void SDK_Grid::tryToSetSolutionInSingleValuedDomain(int index){
     int row = index / 9;
     int column = index % 9;
     int sector = data[index].getSector();
+    // cout<<"remove "<<solution<<" at "<<row<<" "<<column<<endl;
     if (!propagate(row, column, sector, solution)){
       throw "ERROR: this value is not valid";
     }
+    // print();
   }
 }
 

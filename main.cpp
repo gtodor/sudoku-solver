@@ -48,9 +48,6 @@ void printSudokuExamples(vector<SDK_Example> sudokuExamples) {
 int main(){
 
   vector<SDK_Example> easyExamples = parseSudokuExamples("./tools/easy.txt");
-
-  //check this particular sudoku
-  //600100002801090000075084000430020561518700409096410300000070000060031050702540603
   
   try{
     for (unsigned int i=0; i<easyExamples.size(); i++) {
@@ -64,10 +61,10 @@ int main(){
       SDK_Solver solver;
       solver.solve(grid);
       if (solver.hasSolutions()) {
-	SDK_Grid solution = solver.popSolution();
-	solution.print();
-	cout<< endl<< solution.toString()<<endl;
-	cout<<easyExamples[i].solution<<endl;
+      	SDK_Grid solution = solver.popSolution();
+      	solution.print();
+      	cout<< endl<< solution.toString()<<endl;
+      	cout<<easyExamples[i].solution<<endl;
       }
       cout<<"------------------------------------------------------------------"<<endl;
       cout<<endl;

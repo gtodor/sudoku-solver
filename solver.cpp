@@ -13,6 +13,8 @@ void SDK_Solver::solve(SDK_Grid& grid){
   SDK_Grid copyGrid(grid);
   vector<int> singleValuedDomainCellsIndexes = copyGrid.getSingleValuedDomainCellsIndexes();
   while(!singleValuedDomainCellsIndexes.empty()){
+    // copyGrid.print();
+    // cout<<endl;
     for(int index : singleValuedDomainCellsIndexes){
       copyGrid.tryToSetSolutionInSingleValuedDomain(index);
     }
@@ -23,6 +25,7 @@ void SDK_Solver::solve(SDK_Grid& grid){
     }
     singleValuedDomainCellsIndexes = copyGrid.getSingleValuedDomainCellsIndexes();
   }
+  cout<<"solution still not found (printing progress): "<<endl;
   copyGrid.print();
   //at this point there are no more single valued domains and the sudoku is not completed
   //search for pairs and update the grid;

@@ -10,6 +10,7 @@ class SDK_Domain {
 public:
   SDK_Domain();
   SDK_Domain(const SDK_Domain& from);
+  void reduceToSingleValue(int value);
   bool remove(int value);
   int getPossibleSolution();
   bool isEmpty();
