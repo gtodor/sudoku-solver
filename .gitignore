@@ -3,3 +3,4 @@ sudoku_solver
 .vscode
 ext/.vscode
 tools/*.txt
+*.txt

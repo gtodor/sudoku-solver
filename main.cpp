@@ -45,9 +45,25 @@ void printSudokuExamples(vector<SDK_Example> sudokuExamples) {
   }
 }
 
-int main(){
+int main(int argc, char** argv){
 
-  vector<SDK_Example> easyExamples = parseSudokuExamples("./tools/easy.txt");
+  string difficulty;
+  if (argc != 2) {
+    difficulty = "easy";
+  } else {
+    difficulty = argv[1];
+  }
+  cout<<difficulty<<endl;
+  if (difficulty != "easy" &&
+      difficulty != "medium" &&
+      difficulty != "hard" &&
+      difficulty != "expert") {
+    difficulty = "easy";
+  }
+
+  string fileName = "./tools/"+difficulty+".txt";
+
+  vector<SDK_Example> easyExamples = parseSudokuExamples(fileName);
   
   try{
     for (unsigned int i=0; i<easyExamples.size(); i++) {
