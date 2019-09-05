@@ -2,10 +2,17 @@ require 'net/http'
 require 'uri'
 require 'json'
 
-file = File.open('easy.txt', 'w')
+difficulty = ARGV[0]
+
+if !["easy", "medium", "hard", "expert"].include? difficulty
+  puts "Usage: ruby sudokuExamples.rb [easy|medium|hard|expert]";
+  return
+end
+
+file = File.open("#{difficulty}.txt", 'w')
 
 # use sudoku.com api to gather examples of sudoku with their solution
-uri = URI('https://sudoku.com/api/getLevel/easy')
+uri = URI("https://sudoku.com/api/getLevel/#{difficulty}")
 
 Net::HTTP::start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
   request = Net::HTTP::Get.new uri
