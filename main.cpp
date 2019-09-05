@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <cassert>
 #include "solver.hpp"
 
 using namespace std;
@@ -16,10 +17,8 @@ vector<SDK_Example> parseSudokuExamples(string file) {
   vector<SDK_Example> result;
   string line;
   while (getline(input, line)) {
-    //cout<<line<<"\t"<<endl;
     string sudoku(line);
     if (getline(input, line)) {
-      //cout<<line<<"\t"<<endl;
       string solution(line);
       SDK_Example entry = {sudoku, solution};
       result.push_back(entry);
@@ -63,24 +62,33 @@ int main(int argc, char** argv){
 
   string fileName = "./tools/"+difficulty+".txt";
 
-  vector<SDK_Example> easyExamples = parseSudokuExamples(fileName);
+  vector<SDK_Example> examples = parseSudokuExamples(fileName);
+
+  // the following is the hardest sudoku ever and the solver solved it very FAST!!!
+  // vector<SDK_Example> examples;
+  // SDK_Example example = {"800000000003600000070090200050007000000045700000100030001000068008500010090000400", ""};
+  // examples.push_back(example);
   
   try{
-    for (unsigned int i=0; i<easyExamples.size(); i++) {
-      vector<int> matrix = parseSudokuData(easyExamples[i].sudoku);
+    for (unsigned int i=0; i<examples.size(); i++) {
+      vector<int> matrix = parseSudokuData(examples[i].sudoku);
       cout<<"building grid..."<<endl;
-      SDK_Grid grid(matrix);
-      grid.print();
+      SDK_Grid originalGrid(matrix);
+      originalGrid.print();
       cout<<endl;
 
       cout<<"solving sudoku"<<endl;
       SDK_Solver solver;
-      solver.solve(grid);
-      if (solver.hasSolutions()) {
-      	SDK_Grid solution = solver.popSolution();
+      SDK_Grid copyGrid(originalGrid);
+      if (solver.solve(copyGrid)) {
+	cout<<"sudoku solution: "<<endl;
+      	SDK_Grid solution = solver.getSolution();
       	solution.print();
       	cout<< endl<< solution.toString()<<endl;
-      	cout<<easyExamples[i].solution<<endl;
+      	cout<<examples[i].solution<<endl;
+	assert(examples[i].solution == solution.toString());
+      } else {
+	cout<<"sudoku does not have a solution"<<endl;
       }
       cout<<"------------------------------------------------------------------"<<endl;
       cout<<endl;

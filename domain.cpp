@@ -39,19 +39,6 @@ bool SDK_Domain::remove(int value) {
   return !isEmpty();
 }
 
-int SDK_Domain::getPossibleSolution() {
-  if(isEmpty()){
-    return 0;
-  }
-  
-  for(int i=0; i<9; i++){
-    if (domain[i] != 0){
-      return domain[i];
-    }
-  }
-  return 0;
-}
-
 void SDK_Domain::print(){
   stringstream resultToPrint;
   for(int i=0; i<9; i++){
@@ -71,4 +58,18 @@ void SDK_Domain::print(){
   
 bool SDK_Domain::isSingleValued() {
   return nonZeroValues == 1;
+}
+
+int SDK_Domain::getSize() {
+  return nonZeroValues;
+}
+
+vector<int> SDK_Domain::getPossibleSolutions() {
+  vector<int> result;
+  for (int i=0; i<9; i++) {
+    if (domain[i] != 0) {
+      result.push_back(domain[i]);
+    }
+  }
+  return result;
 }

@@ -12,10 +12,11 @@ public:
   SDK_Domain(const SDK_Domain& from);
   void reduceToSingleValue(int value);
   bool remove(int value);
-  int getPossibleSolution();
   bool isEmpty();
   void print();
   bool isSingleValued();
+  int getSize();
+  std::vector<int> getPossibleSolutions();
 };
 
 #endif //DOMAIN_HPP

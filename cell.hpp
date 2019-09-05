@@ -1,6 +1,7 @@
 #ifndef CELL_HPP
 #define CELL_HPP
 
+#include <vector>
 #include "domain.hpp"
 
 class SDK_Cell {
@@ -14,7 +15,6 @@ public:
   SDK_Cell(int sector);
   SDK_Cell(const SDK_Cell& from);
   bool removeFromDomain(int value);
-  int getPossibleSolution();
   int getSector();
   bool isFixed();
   void setSolution(int solution);
@@ -22,6 +22,8 @@ public:
   void print();
   bool isDomainSingleValued();
   bool tryToSetSolutionInSingleValuedDomain();
+  int getDomainSize();
+  std::vector<int> getDomainValues();
 };
 
 #endif //CELL_HPP

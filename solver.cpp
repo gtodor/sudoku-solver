@@ -5,61 +5,46 @@
 
 using namespace std;
 
-void SDK_Solver::solve(SDK_Grid& grid){
+SDK_Solver::SDK_Solver() {}
+
+bool SDK_Solver::solve(SDK_Grid& grid){
   if(grid.isCompleted()){
-    solutions.push(grid);
-    return;
+    solution = grid;;
+    return true;
   }
-  SDK_Grid copyGrid(grid);
-  vector<int> singleValuedDomainCellsIndexes = copyGrid.getSingleValuedDomainCellsIndexes();
+  
+  vector<int> singleValuedDomainCellsIndexes = grid.getSingleValuedDomainCellsIndexes();
   while(!singleValuedDomainCellsIndexes.empty()){
-    // copyGrid.print();
-    // cout<<endl;
     for(int index : singleValuedDomainCellsIndexes){
-      copyGrid.tryToSetSolutionInSingleValuedDomain(index);
+      if (!grid.tryToSetSolutionInSingleValuedDomain(index)) {
+	return false;
+      }
     }
-    if (copyGrid.isCompleted()){
-      cout<<"solution found"<<endl;
-      solutions.push(copyGrid);
-      return;
+    if (grid.isCompleted()){
+      solution = grid;
+      return true;
     }
-    singleValuedDomainCellsIndexes = copyGrid.getSingleValuedDomainCellsIndexes();
+    singleValuedDomainCellsIndexes = grid.getSingleValuedDomainCellsIndexes();
   }
-  cout<<"solution still not found (printing progress): "<<endl;
-  copyGrid.print();
-  //at this point there are no more single valued domains and the sudoku is not completed
-  //search for pairs and update the grid;
-  //solve(grid, index);
+
+  int indexCellSmallestDomain = grid.getSmallestDomainCellIndex();
+  vector<int> smallestDomain = grid.getCellDomain(indexCellSmallestDomain);
+  for (unsigned int i=0; i<smallestDomain.size(); i++) {
+    int value = smallestDomain[i];
+    int row = indexCellSmallestDomain / 9;
+    int column = indexCellSmallestDomain % 9;
+    SDK_Grid copyGrid(grid);
+    if (!copyGrid.set(row, column, value)){
+      continue;
+    }
+    if (solve(copyGrid)) {
+      return true;
+    }
+  }
+  
+  return false;
 }
 
-void SDK_Solver::solve(SDK_Grid& grid, int index){
-    // if(index == 81){
-    //     print_solution(grid.getData());
-    //     solutions.push(grid.getData());
-    // }else{
-    //     string domain = grid.getDomain(index);
-    //     for(unsigned int i=0; i<=domain.size(); i++){
-    //         SDK_Grid tmp_grid(grid);
-    //         int tmp_index = index;
-    //         int value = domain[i] - '0';
-
-    //         if(tmp_grid.set(tmp_index, value)){ 
-    //             print_solution(tmp_grid.getData());
-    //             do{
-    //                 tmp_index++;
-    //             }while(tmp_index < 81 && tmp_grid.get(tmp_index) != 0);
-    //             solve(tmp_grid, tmp_index);
-    //         }
-    //     }
-    // }
-}
-
-bool SDK_Solver::hasSolutions() const{
-  return !solutions.empty();  
-}
-
-SDK_Grid SDK_Solver::popSolution(){
-  SDK_Grid solution = solutions.front();
-  solutions.pop();
+SDK_Grid SDK_Solver::getSolution(){
   return solution;
 }

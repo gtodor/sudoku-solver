@@ -2,16 +2,14 @@
 #define SOLVER_HPP
 
 #include "grid.hpp"
-#include <queue>
 
 class SDK_Solver{
 private:
-  std::queue<SDK_Grid> solutions;
-  void solve(SDK_Grid& grid, int index);
+  SDK_Grid solution;
 public:
-  void solve(SDK_Grid& grid);
-  SDK_Grid popSolution();
-  bool hasSolutions() const;
+  SDK_Solver();
+  bool solve(SDK_Grid& grid);
+  SDK_Grid getSolution();
 };
 
 

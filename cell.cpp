@@ -41,10 +41,6 @@ int SDK_Cell::getSolution() {
   return solution;
 }
 
-int SDK_Cell::getPossibleSolution() {
-  return domain.getPossibleSolution();
-}
-
 void SDK_Cell::print() {
   if(isFixed()){
     const string mangenta("\033[0;35m");
@@ -66,7 +62,15 @@ bool SDK_Cell::tryToSetSolutionInSingleValuedDomain() {
   if (!domain.isSingleValued()) {
     return false;
   }
-  solution = domain.getPossibleSolution();
+  solution = domain.getPossibleSolutions()[0];
   fixed = true;
   return true;
+}
+
+int SDK_Cell::getDomainSize() {
+  return domain.getSize();
+}
+
+vector<int> SDK_Cell::getDomainValues() {
+  return domain.getPossibleSolutions();
 }

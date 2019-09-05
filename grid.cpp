@@ -21,25 +21,22 @@ SDK_Grid::SDK_Grid(vector<int>& from) {
       data.push_back(cell);
     }
   }
-  // print();
-  // cout<<"------------------------------------------------------------"<<endl;
   for(int row=0; row<9; row++){
     for(int column=0; column<9; column++) {
       if(data[row*9+column].isFixed()){
 	int solution = data[row*9+column].getSolution();
 	int sector = data[row*9+column].getSector();
-	// cout<<"removing "<<solution<<" at "<<row<<" "<<column<<endl<<endl;
 	if (!propagate(row, column, sector, solution)) {
 	  throw "input data is wrong";
 	}
-	// print();
-	// cout<<"----------------------------------------------------------------"<<endl;
       }
     }
   }
 }
 
 SDK_Grid::SDK_Grid(const SDK_Grid& from) : data(from.data) {}
+
+SDK_Grid::SDK_Grid() : data() {}
 
 bool SDK_Grid::propagateColumn(int column, int value) {
   for(int row=0; row<9; row++){
@@ -100,12 +97,10 @@ void SDK_Grid::print() {
   }
 }
 
-void SDK_Grid::set(int row, int column, int value) {
+bool SDK_Grid::set(int row, int column, int value) {
   data[row*9+column].setSolution(value);
   int sector = data[row*9+column].getSector();
-  if(!propagate(row, column, sector, value)){
-    throw "ERROR: this value is not valid";
-  }
+  return propagate(row, column, sector, value);  
 }
 
 vector<int> SDK_Grid::getSingleValuedDomainCellsIndexes() {
@@ -118,18 +113,15 @@ vector<int> SDK_Grid::getSingleValuedDomainCellsIndexes() {
   return result;
 }
 
-void SDK_Grid::tryToSetSolutionInSingleValuedDomain(int index){
+bool SDK_Grid::tryToSetSolutionInSingleValuedDomain(int index){
   if (data[index].tryToSetSolutionInSingleValuedDomain()) {
     int solution = data[index].getSolution();
     int row = index / 9;
     int column = index % 9;
     int sector = data[index].getSector();
-    // cout<<"remove "<<solution<<" at "<<row<<" "<<column<<endl;
-    if (!propagate(row, column, sector, solution)){
-      throw "ERROR: this value is not valid";
-    }
-    // print();
+    return propagate(row, column, sector, solution);
   }
+  return false;
 }
 
 string SDK_Grid::toString() {
@@ -138,4 +130,25 @@ string SDK_Grid::toString() {
     result << data[index].getSolution();
   }
   return result.str();
+}
+
+
+int SDK_Grid::getSmallestDomainCellIndex() {
+  int smallestDomainIndex = 0;
+  while (data[smallestDomainIndex].isFixed()) {
+    smallestDomainIndex++;
+  }
+  int smallestDomainSize = data[smallestDomainIndex].getDomainSize();
+  for (int i=0; i<81; i++) {
+    if (!data[i].isFixed() && data[i].getDomainSize() < smallestDomainSize) {
+      smallestDomainSize = data[i].getDomainSize();
+      smallestDomainIndex = i;
+    }
+  }
+  
+  return smallestDomainIndex;
+}
+
+vector<int> SDK_Grid::getCellDomain(int index) {
+  return data[index].getDomainValues();
 }
