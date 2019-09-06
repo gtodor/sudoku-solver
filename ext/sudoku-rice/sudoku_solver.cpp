@@ -20,18 +20,10 @@ Array rice_solve(std::vector<int> input){
     if(input.size() != 81){
         return Array(0);
     }
-    for(int i = 0; i< 81; i++){
-        std::cout<<input[i]<<" ";
-    }
-    std::cout<<std::endl;
-    std::cout<<"beginning"<<std::endl;
     SDK_Grid grid(input);
-    std::cout<<"after grid creation"<<std::endl;
     SDK_Solver solver;
     if (solver.solve(grid)) {
-        std::cout<<"solver found solution"<<std::endl;
 	SDK_Grid solution = solver.getSolution();
-        solution.print();
 	std::vector<int> data = solution.getData();
         Array result;
         for(int i = 0; i < 81; i++){
@@ -39,7 +31,6 @@ Array rice_solve(std::vector<int> input){
         }
         return result;
     }
-    std::cout<<"solver did not find solution"<<std::endl;
     return Array(0);
 }
 
