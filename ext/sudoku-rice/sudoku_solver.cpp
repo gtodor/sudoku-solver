@@ -25,21 +25,21 @@ Array rice_solve(std::vector<int> input){
     }
     std::cout<<std::endl;
     std::cout<<"beginning"<<std::endl;
-    sdk_grid grid(input);
+    SDK_Grid grid(input);
     std::cout<<"after grid creation"<<std::endl;
-    sdk_solver solver(grid);
-    std::cout<<"after solver solve"<<std::endl;
-    if (solver.solve() == true) {
+    SDK_Solver solver;
+    if (solver.solve(grid)) {
         std::cout<<"solver found solution"<<std::endl;
-        std::vector<int> solution = solver.popSolution();
-        std::cout<<"solver solution"<<std::endl;
+	SDK_Grid solution = solver.getSolution();
+        solution.print();
+	std::vector<int> data = solution.getData();
         Array result;
         for(int i = 0; i < 81; i++){
-            result.push(to_ruby(solution[i]));
+            result.push(to_ruby(data[i]));
         }
         return result;
     }
-    std::cout<<"solver not found solution"<<std::endl;
+    std::cout<<"solver did not find solution"<<std::endl;
     return Array(0);
 }
 

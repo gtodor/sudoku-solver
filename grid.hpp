@@ -24,6 +24,7 @@ public:
   bool tryToSetSolutionInSingleValuedDomain(int index);
   int getSmallestDomainCellIndex();
   std::vector<int> getCellDomain(int index);
+  std::vector<int> getData();
 };
 
 

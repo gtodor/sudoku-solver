@@ -152,3 +152,11 @@ int SDK_Grid::getSmallestDomainCellIndex() {
 vector<int> SDK_Grid::getCellDomain(int index) {
   return data[index].getDomainValues();
 }
+
+vector<int> SDK_Grid::getData() {
+  vector<int> result;
+  for (int i=0; i<81; i++) {
+    result.push_back(data[i].getSolution());
+  }
+  return result;
+}
