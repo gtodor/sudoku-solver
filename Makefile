@@ -1,25 +1,22 @@
-.PHONY: all tests clean
+all: solver_ext
 
-all: sudoku_solver
+.PHONY: all clean
 
-sudoku_solver: main.o grid.o solver.o cell.o domain.o
-	g++ -Wall -Wextra -g -o $@ $^ 
+solver_ext: obj/solver.o obj/grid.o obj/cell.o obj/domain.o
+	(cd ext/sudoku-rice && $(MAKE))
 
-main.o: main.cpp
-	g++ -Wall -Wextra -g -c main.cpp -o $@
-grid.o: grid.cpp grid.hpp
-	g++ -Wall -Wextra -g -c grid.cpp -o $@
-solver.o: solver.cpp solver.hpp
-	g++ -Wall -Wextra -g -c solver.cpp -o $@
+obj/grid.o: src/grid.cpp src/grid.hpp
+	g++ -Wall -Wextra -g -fPIC -c src/grid.cpp -o $@
 
-cell.o: cell.cpp cell.hpp
-	g++ -Wall -Wextra -g -c cell.cpp -o $@
+obj/solver.o: src/solver.cpp src/solver.hpp
+	g++ -Wall -Wextra -g -fPIC -c src/solver.cpp -o $@
 
-domain.o: domain.cpp domain.hpp
-	g++ -Wall -Wextra -g -c domain.cpp -o $@
+obj/cell.o: src/cell.cpp src/cell.hpp
+	g++ -Wall -Wextra -g -fPIC -c src/cell.cpp -o $@
 
-tests:
-	cd tests/ && $(MAKE)
+obj/domain.o: src/domain.cpp src/domain.hpp
+	g++ -Wall -Wextra -g -fPIC -c src/domain.cpp -o $@
 
 clean:
-	rm sudoku_solver *.o
+	(cd obj && rm *)
+	(cd ext/sudoku-rice && $(MAKE) clean)

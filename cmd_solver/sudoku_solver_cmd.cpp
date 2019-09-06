@@ -60,7 +60,7 @@ int main(int argc, char** argv){
     difficulty = "easy";
   }
 
-  string fileName = "./tools/"+difficulty+".txt";
+  string fileName = "../tools/"+difficulty+".txt";
 
   vector<SDK_Example> examples = parseSudokuExamples(fileName);
 

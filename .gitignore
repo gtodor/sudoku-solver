@@ -4,3 +4,4 @@ sudoku_solver
 ext/.vscode
 tools/*.txt
 *.txt
+cmd_solver/obj

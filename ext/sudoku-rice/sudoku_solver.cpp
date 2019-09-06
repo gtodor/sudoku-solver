@@ -3,7 +3,7 @@
 #include <rice/Object.hpp>
 #include <vector>
 #include <iostream>
-#include "../../solver.hpp"
+#include "../../src/solver.hpp"
 using namespace Rice;
 
 
