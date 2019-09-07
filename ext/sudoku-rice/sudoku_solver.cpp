@@ -17,21 +17,20 @@ std::vector<int> from_ruby< std::vector<int> > (Object o)   {
 }
 
 Array rice_solve(std::vector<int> input){
-    if(input.size() != 81){
-        return Array(0);
+  Array result;
+  if(input.size() != 81){
+    return result;
+  }
+  SDK_Grid grid(input);
+  SDK_Solver solver;
+  if (solver.solve(grid)) {
+    SDK_Grid solution = solver.getSolution();
+    std::vector<int> data = solution.getData();
+    for(int i = 0; i < 81; i++){
+      result.push(to_ruby(data[i]));
     }
-    SDK_Grid grid(input);
-    SDK_Solver solver;
-    if (solver.solve(grid)) {
-	SDK_Grid solution = solver.getSolution();
-	std::vector<int> data = solution.getData();
-        Array result;
-        for(int i = 0; i < 81; i++){
-            result.push(to_ruby(data[i]));
-        }
-        return result;
-    }
-    return Array(0);
+  }
+  return result;
 }
 
 
