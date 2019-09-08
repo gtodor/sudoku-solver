@@ -1,5 +1,5 @@
 require 'json'
-require './sudoku_solver'
+require 'sudoku_solver'
 
 class Response
   def initialize(code:, data: "")
