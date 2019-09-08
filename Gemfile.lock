@@ -1,3 +1,8 @@
+PATH
+  remote: .
+  specs:
+    sudoku-solver (0.0.1)
+
 GEM
   specs:
 
@@ -5,6 +10,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  sudoku-solver (= 0.0.1)!
 
 BUNDLED WITH
    1.17.3
