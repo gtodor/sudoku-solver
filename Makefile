@@ -6,7 +6,7 @@ solver_ext: rice lib/libsudokusolvr.a
 	(cd ext/sudoku-rice && $(MAKE) && cp sudoku_solvr.so ../../server/)
 
 rice:
-	bundle install
+	sudo gem install rice
 
 lib/libsudokusolvr.a: obj/solver.o obj/grid.o obj/cell.o obj/domain.o | obj
 	ar rcs $@ $^
