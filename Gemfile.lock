@@ -10,4 +10,4 @@ DEPENDENCIES
   sudoku-solvr (= 0.1.4)
 
 BUNDLED WITH
-   1.17.3
+   1.15.2
