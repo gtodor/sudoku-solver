@@ -1,4 +1,4 @@
-require 'sudoku-solvr'
+require './sudoku_solvr'
 
 arr= [0,0,4,0,0,1,2,0,0,
       0,0,1,0,0,6,0,3,0,
