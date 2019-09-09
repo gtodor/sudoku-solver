@@ -2,11 +2,8 @@ all: solver_ext
 
 .PHONY: all clean
 
-solver_ext: rice lib/libsudokusolvr.a
+solver_ext: lib/libsudokusolvr.a
 	(cd ext/sudoku-rice && $(MAKE) && cp sudoku_solvr.so ../../server/)
-
-rice:
-	sudo gem install rice
 
 lib/libsudokusolvr.a: obj/solver.o obj/grid.o obj/cell.o obj/domain.o | obj
 	ar rcs $@ $^
