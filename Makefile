@@ -5,7 +5,7 @@ all: solver_ext
 solver_ext: lib/libsudokusolvr.a
 	(cd ext/sudoku-rice && $(MAKE) && cp sudoku_solvr.so ../../server/)
 
-lib/libsudokusolvr.a: obj/solver.o obj/grid.o obj/cell.o obj/domain.o | obj
+lib/libsudokusolvr.a: obj/solver.o obj/grid.o obj/cell.o obj/domain.o | obj lib
 	ar rcs $@ $^
 
 obj/grid.o: src/grid.cpp include/grid.hpp | obj
@@ -21,6 +21,9 @@ obj/domain.o: src/domain.cpp include/domain.hpp | obj
 	g++ -Wall -Wextra -g -fPIC -c src/domain.cpp -o $@ -Iinclude
 
 obj:
+	mkdir -p $@
+
+lib:
 	mkdir -p $@
 
 clean:
