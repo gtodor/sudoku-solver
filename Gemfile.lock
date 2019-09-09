@@ -1,13 +1,10 @@
 GEM
-  remote: https://rubygems.org/
   specs:
-    sudoku-solvr (0.1.4)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  sudoku-solvr (= 0.1.4)
 
 BUNDLED WITH
    1.15.2
