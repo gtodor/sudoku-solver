@@ -1,2 +1,2 @@
 require 'mkmf-rice'
-create_makefile('sudoku_solver')
+create_makefile('sudoku_solvr')

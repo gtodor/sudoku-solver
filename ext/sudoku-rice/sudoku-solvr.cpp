@@ -3,7 +3,7 @@
 #include <rice/Object.hpp>
 #include <vector>
 #include <iostream>
-#include "../../src/solver.hpp"
+#include "solver.hpp"
 using namespace Rice;
 
 
@@ -36,7 +36,7 @@ Array rice_solve(std::vector<int> input){
 
 extern "C"
 
-void Init_sudoku_solver() {
+void Init_sudoku_solvr() {
     Class rb = define_class("SudokuSolver")
         .define_method("solve", &rice_solve);
 }

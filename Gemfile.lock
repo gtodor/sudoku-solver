@@ -1,16 +1,13 @@
-PATH
-  remote: .
-  specs:
-    sudoku-solver (0.0.1)
-
 GEM
+  remote: https://rubygems.org/
   specs:
+    sudoku-solvr (0.1.4)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  sudoku-solver (= 0.0.1)!
+  sudoku-solvr (= 0.1.4)
 
 BUNDLED WITH
    1.17.3

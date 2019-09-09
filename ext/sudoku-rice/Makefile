@@ -129,11 +129,11 @@ debugflags = -ggdb3
 warnflags = -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wno-tautological-compare -Wno-parentheses-equality -Wno-constant-logical-operand -Wno-self-assign -Wunused-variable -Wimplicit-int -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration -Wdeprecated-declarations -Wmisleading-indentation -Wno-packed-bitfield-compat -Wsuggest-attribute=noreturn -Wsuggest-attribute=format -Wimplicit-fallthrough=0 -Wduplicated-cond -Wrestrict
 CCDLFLAGS = -fPIC
 CFLAGS   = $(CCDLFLAGS) -g -O2 -fdebug-prefix-map=/build/ruby2.5-TdNoZ6/ruby2.5-2.5.1=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC $(ARCH_FLAG)
-INCFLAGS = -I. -I$(arch_hdrdir) -I$(hdrdir)/ruby/backward -I$(hdrdir) -I$(srcdir)
+INCFLAGS = -I. -I../../include/ -I$(arch_hdrdir) -I$(hdrdir)/ruby/backward -I$(hdrdir) -I$(srcdir)
 DEFS     = 
 CPPFLAGS =  -Wdate-time -D_FORTIFY_SOURCE=2 $(DEFS) $(cppflags)  -I/var/lib/gems/2.5.0/gems/rice-2.1.3/ruby/lib/include
 CXXFLAGS = $(CFLAGS)  -Wall -g
-ldflags  = -L. -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now -fstack-protector -rdynamic -Wl,-export-dynamic  -L/var/lib/gems/2.5.0/gems/rice-2.1.3/ruby/lib/lib -lrice
+ldflags  = -L. -L../../lib/ -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now -fstack-protector -rdynamic -Wl,-export-dynamic  -L/var/lib/gems/2.5.0/gems/rice-2.1.3/ruby/lib/lib -lrice
 dldflags = -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now -Wl,--compress-debug-sections=zlib 
 ARCH_FLAG = 
 DLDFLAGS = $(ldflags) $(dldflags) $(ARCH_FLAG)
@@ -191,14 +191,14 @@ extout =
 extout_prefix = 
 target_prefix = 
 LOCAL_LIBS = 
-LIBS = -lruby-2.5 -lpthread -lgmp -ldl -lcrypt -lm   -lc
-ORIG_SRCS = ../../src/solver.cpp ../../src/grid.cpp ../../src/cell.cpp ../../src/domain.cpp sudoku_solver.cpp
+LIBS = -lruby-2.5 -lpthread -lgmp -ldl -lcrypt -lm   -lc -lsudokusolvr
+ORIG_SRCS = sudoku-solvr.cpp
 SRCS = $(ORIG_SRCS) 
-OBJS = ../../obj/solver.o ../../obj/grid.o ../../obj/cell.o ../../obj/domain.o  sudoku_solver.o
-HDRS = ../../src/solver.hpp ../../src/grid.hpp ../../src/cell.hpp ../../src/domain.hpp
+OBJS = sudoku-solvr.o
+HDRS = 
 LOCAL_HDRS = 
-TARGET = sudoku_solver
-TARGET_NAME = sudoku_solver
+TARGET = sudoku_solvr
+TARGET_NAME = sudoku_solvr
 TARGET_ENTRY = Init_$(TARGET_NAME)
 DLLIB = $(TARGET).so
 EXTSTATIC = 

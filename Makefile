@@ -1,26 +1,27 @@
-all: solver_server
+all: solver_ext
 
 .PHONY: all clean
 
-solver_server: solver_ext
-	cp ext/sudoku-rice/sudoku_solver.so server/
-
-solver_ext: obj/solver.o obj/grid.o obj/cell.o obj/domain.o
+solver_ext: lib/libsudokusolvr.a
 	(cd ext/sudoku-rice && $(MAKE))
 
-obj/grid.o: src/grid.cpp src/grid.hpp
-	g++ -Wall -Wextra -g -fPIC -c src/grid.cpp -o $@
+lib/libsudokusolvr.a: obj/solver.o obj/grid.o obj/cell.o obj/domain.o
+	ar rcs $@ $^
 
-obj/solver.o: src/solver.cpp src/solver.hpp
-	g++ -Wall -Wextra -g -fPIC -c src/solver.cpp -o $@
+obj/grid.o: src/grid.cpp include/grid.hpp
+	g++ -Wall -Wextra -g -fPIC -c src/grid.cpp -o $@ -Iinclude
 
-obj/cell.o: src/cell.cpp src/cell.hpp
-	g++ -Wall -Wextra -g -fPIC -c src/cell.cpp -o $@
+obj/solver.o: src/solver.cpp include/solver.hpp
+	g++ -Wall -Wextra -g -fPIC -c src/solver.cpp -o $@ -Iinclude
 
-obj/domain.o: src/domain.cpp src/domain.hpp
-	g++ -Wall -Wextra -g -fPIC -c src/domain.cpp -o $@
+obj/cell.o: src/cell.cpp include/cell.hpp
+	g++ -Wall -Wextra -g -fPIC -c src/cell.cpp -o $@ -Iinclude
+
+obj/domain.o: src/domain.cpp include/domain.hpp
+	g++ -Wall -Wextra -g -fPIC -c src/domain.cpp -o $@ -Iinclude
 
 clean:
 	(cd obj && rm *)
+	(cd lib && rm *)
 	(cd ext/sudoku-rice && $(MAKE) clean)
-	(cd server && rm sudoku_solver.so)
+

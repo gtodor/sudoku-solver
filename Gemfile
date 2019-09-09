@@ -1,1 +1,2 @@
-gem 'sudoku-solver', '0.0.1', :path => './'
+source 'https://rubygems.org'
+gem 'sudoku-solvr', '0.1.4'
