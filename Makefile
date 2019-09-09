@@ -3,7 +3,7 @@ all: solver_ext
 .PHONY: all clean
 
 solver_ext: lib/libsudokusolvr.a
-	(cd ext/sudoku-rice && $(MAKE))
+	(cd ext/sudoku-rice && $(MAKE) && cp sudoku_solvr.so ../../server/)
 
 lib/libsudokusolvr.a: obj/solver.o obj/grid.o obj/cell.o obj/domain.o
 	ar rcs $@ $^
