@@ -1,4 +1,4 @@
-require_relative 'sudoku_solvr'
+require 'sudoku_solver'
 require 'json'
 
 class Response

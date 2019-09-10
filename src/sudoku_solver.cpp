@@ -36,7 +36,7 @@ Array rice_solve(std::vector<int> input){
 
 extern "C"
 
-void Init_sudoku_solvr() {
+void Init_sudoku_solver() {
     Class rb = define_class("SudokuSolver")
         .define_method("solve", &rice_solve);
 }
