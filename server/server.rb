@@ -24,8 +24,11 @@ def handle_connection(client)
 end
 
 loop do
-  Thread.fork(server.accept) do |client| 
-    handle_connection(client)
+  Thread.fork(server.accept) do |client|
+    begin
+      handle_connection(client)
+    rescue EOFError
+    end
     client.close
   end
 end
