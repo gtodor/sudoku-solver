@@ -12,6 +12,7 @@ class Response
   end
 
   def send(client)
+    puts @response
     client.write(@response)
   end
 end
