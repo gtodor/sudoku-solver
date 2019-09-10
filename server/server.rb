@@ -5,29 +5,27 @@ include RequestParser
 include PrepareResponse
 
 port = ENV["PORT"]
-logfile = File.open("logs.txt", "w")
-logfile.puts "using port #{port}"
+
+puts "using port #{port}"
 
 server = TCPServer.new('0.0.0.0', port)
 
-def handle_connection(client, logfile)
+def handle_connection(client)
   request = client.readpartial(2048)
   request = RequestParser.parse(request)
 
-  logfile.puts
-  logfile.puts request
-  logfile.puts
+  puts
+  puts request
+  puts
 
   response = PrepareResponse.prepare(request)
-  logfile.puts "############################################################"
+  puts "############################################################"
   response.send(client)
 end
 
 loop do
   Thread.fork(server.accept) do |client| 
-    handle_connection(client, logfile)
+    handle_connection(client)
     client.close
   end
 end
-
-logfile.close
