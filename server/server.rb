@@ -5,7 +5,8 @@ include RequestParser
 include PrepareResponse
 
 port = ENV["PORT"]
-server = TCPServer.new('localhost', port)
+puts "using port #{port}"
+server = TCPServer.new('0.0.0.0', port)
 
 def handle_connection(client)
   request = client.readpartial(2048)
