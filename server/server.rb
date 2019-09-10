@@ -11,7 +11,10 @@ puts "using port #{port}"
 server = TCPServer.new('0.0.0.0', port)
 
 def handle_connection(client)
+  puts "handle connection for client #{client}"
   request = client.readpartial(2048)
+  puts "readpartial done"
+  puts request
   request = RequestParser.parse(request)
 
   puts
