@@ -4,7 +4,8 @@ require_relative 'response'
 include RequestParser
 include PrepareResponse
 
-server = TCPServer.new('localhost', 8080)
+port = ENV["PORT"]
+server = TCPServer.new('localhost', port)
 
 def handle_connection(client)
   request = client.readpartial(2048)
