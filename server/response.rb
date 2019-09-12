@@ -7,6 +7,7 @@ class Response
       "HTTP/1.1 #{code}\r\n" +
       "Content-Length: #{data.size}\r\n" +
       "Content-Type: application/json\r\n" +
+      "Access-Control-Allow-Origin: *\r\n" +
       "\r\n"+
       "#{data}\r\n"
   end
