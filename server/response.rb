@@ -50,10 +50,10 @@ module PrepareResponse
   end
 
   def send_error_sudoku_init(data)
-    Response.new(code: 200, data: data)
+    Response.new(code: 404, data: data)
   end
 
   def send_error_no_solution(data)
-    Response.new(code: 200, data: data)
+    Response.new(code: 404, data: data)
   end
 end
