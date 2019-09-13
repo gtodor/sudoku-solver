@@ -8,3 +8,4 @@ obj/
 lib/
 cmd_solver/obj
 server/*.so
+src/Makefile
