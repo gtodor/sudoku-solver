@@ -60,19 +60,20 @@ int main(int argc, char** argv){
     difficulty = "easy";
   }
 
-  string fileName = "../tools/"+difficulty+".txt";
+  string fileName = "./"+difficulty+".txt";
 
   vector<SDK_Example> examples = parseSudokuExamples(fileName);
 
-  // the following is the hardest sudoku ever and the solver solved it very FAST!!!
-  // vector<SDK_Example> examples;
-  // SDK_Example example = {"800000000003600000070090200050007000000045700000100030001000068008500010090000400", ""};
-  // examples.push_back(example);
+  //the following is the hardest sudoku ever and the solver solved it very FAST!!!
+  //vector<SDK_Example> examples;
+  //SDK_Example example = {"800000000003600000070090200050007000000045700000100030001000068008500010090000400", ""};
+  //SDK_Example example = {"880000000000000000000000000000000000000000000000000000000000000000000000000000000", ""};
+  //examples.push_back(example);
   
   try{
     for (unsigned int i=0; i<examples.size(); i++) {
       vector<int> matrix = parseSudokuData(examples[i].sudoku);
-      cout<<"building grid..."<<endl;
+      cout<<i<<": building grid..."<<endl;
       SDK_Grid originalGrid(matrix);
       originalGrid.print();
       cout<<endl;
@@ -81,12 +82,12 @@ int main(int argc, char** argv){
       SDK_Solver solver;
       SDK_Grid copyGrid(originalGrid);
       if (solver.solve(copyGrid)) {
-	cout<<"sudoku solution: "<<endl;
+	      cout<<"sudoku solution: "<<endl;
       	SDK_Grid solution = solver.getSolution();
       	solution.print();
       	cout<< endl<< solution.toString()<<endl;
       	cout<<examples[i].solution<<endl;
-	assert(examples[i].solution == solution.toString());
+	      assert(examples[i].solution == solution.toString());
       } else {
 	cout<<"sudoku does not have a solution"<<endl;
       }

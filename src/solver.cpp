@@ -17,7 +17,7 @@ bool SDK_Solver::solve(SDK_Grid& grid){
   while(!singleValuedDomainCellsIndexes.empty()){
     for(int index : singleValuedDomainCellsIndexes){
       if (!grid.tryToSetSolutionInSingleValuedDomain(index)) {
-	return false;
+	      return false;
       }
     }
     if (grid.isCompleted()){
@@ -27,13 +27,14 @@ bool SDK_Solver::solve(SDK_Grid& grid){
     singleValuedDomainCellsIndexes = grid.getSingleValuedDomainCellsIndexes();
   }
 
+
   int indexCellSmallestDomain = grid.getSmallestDomainCellIndex();
   vector<int> smallestDomain = grid.getCellDomain(indexCellSmallestDomain);
   for (unsigned int i=0; i<smallestDomain.size(); i++) {
     int value = smallestDomain[i];
     int row = indexCellSmallestDomain / 9;
     int column = indexCellSmallestDomain % 9;
-    SDK_Grid copyGrid(grid);
+    SDK_Grid copyGrid(grid);      
     if (!copyGrid.set(row, column, value)){
       continue;
     }

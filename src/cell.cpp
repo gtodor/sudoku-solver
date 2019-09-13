@@ -17,10 +17,7 @@ SDK_Cell::SDK_Cell(const SDK_Cell& from) :
   fixed(from.fixed) {}
 
 bool SDK_Cell::removeFromDomain(int value) {
-  if(!fixed){
-    return domain.remove(value);
-  }
-  return true;
+  return domain.remove(value);
 }
 
 int SDK_Cell::getSector() {
@@ -46,11 +43,10 @@ void SDK_Cell::print() {
     const string mangenta("\033[0;35m");
     const string reset("\033[0m");
     cout<<mangenta<<solution<<reset;
-    for (int i=0; i<8; i++){
-      cout<< " ";
-    }
+    domain.print();
   } else {
     domain.print();
+    cout<<" ";
   }
 }
 

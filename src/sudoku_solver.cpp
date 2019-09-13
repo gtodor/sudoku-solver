@@ -21,16 +21,20 @@ Array rice_solve(std::vector<int> input){
   if(input.size() != 81){
     return result;
   }
-  SDK_Grid grid(input);
-  SDK_Solver solver;
-  if (solver.solve(grid)) {
-    SDK_Grid solution = solver.getSolution();
-    std::vector<int> data = solution.getData();
-    for(int i = 0; i < 81; i++){
-      result.push(to_ruby(data[i]));
+  try {
+    SDK_Grid grid(input);
+    SDK_Solver solver;
+    if (solver.solve(grid)) {
+      SDK_Grid solution = solver.getSolution();
+      std::vector<int> data = solution.getData();
+      for(int i = 0; i < 81; i++){
+        result.push(to_ruby(data[i]));
+      }
     }
+    return result;
+  } catch(const char* e) {
+    return result;
   }
-  return result;
 }
 
 

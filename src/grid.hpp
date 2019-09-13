@@ -8,9 +8,9 @@
 class SDK_Grid{
 private:
   std::vector<SDK_Cell> data;
-  bool propagateRow(int row, int value);
-  bool propagateColumn(int column, int value);
-  bool propagateSector(int sector, int value);
+  bool propagateRow(int row, int column, int value);
+  bool propagateColumn(int row, int column, int value);
+  bool propagateSector(int row, int column, int sector, int value);
 public:
   SDK_Grid(std::vector<int>& from);
   SDK_Grid(const SDK_Grid& from);

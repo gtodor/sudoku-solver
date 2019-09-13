@@ -16,7 +16,7 @@ SDK_Grid::SDK_Grid(vector<int>& from) {
       SDK_Cell cell(sector);
       int index = row*9+column;
       if (from[index] != 0) {
-	cell.setSolution(from[index]);
+        cell.setSolution(from[index]);
       }
       data.push_back(cell);
     }
@@ -24,11 +24,11 @@ SDK_Grid::SDK_Grid(vector<int>& from) {
   for(int row=0; row<9; row++){
     for(int column=0; column<9; column++) {
       if(data[row*9+column].isFixed()){
-	int solution = data[row*9+column].getSolution();
-	int sector = data[row*9+column].getSector();
-	if (!propagate(row, column, sector, solution)) {
-	  throw "input data is wrong";
-	}
+	      int solution = data[row*9+column].getSolution();
+	      int sector = data[row*9+column].getSector();
+	      if (!propagate(row, column, sector, solution)) {
+	        throw "input data is wrong";
+	      }
       }
     }
   }
@@ -38,26 +38,37 @@ SDK_Grid::SDK_Grid(const SDK_Grid& from) : data(from.data) {}
 
 SDK_Grid::SDK_Grid() : data() {}
 
-bool SDK_Grid::propagateColumn(int column, int value) {
-  for(int row=0; row<9; row++){
-    if(!data[row*9+column].removeFromDomain(value)) {
+bool SDK_Grid::propagateColumn(int row, int column, int value) {
+  for(int r=0; r<9; r++){
+    if(r == row) {
+      continue;
+    }
+    if(!data[r*9+column].removeFromDomain(value)) {
       return false;
     }
   }
   return true;
 }
 
-bool SDK_Grid::propagateRow(int row, int value) {
-  for(int column=0; column<9; column++){
-    if(!data[row*9+column].removeFromDomain(value)) {
+bool SDK_Grid::propagateRow(int row, int column, int value) {
+  for(int col=0; col<9; col++){
+    if(col == column) {
+      continue;
+    }
+    if(!data[row*9+col].removeFromDomain(value)) {
       return false;
     }
   }
   return true;
 }
 
-bool SDK_Grid::propagateSector(int sector, int value) {
+bool SDK_Grid::propagateSector(int row, int column, int sector, int value) {
   for(int i = 0; i < 81; i++){
+    int current_row = i/9;
+    int current_column = i%9;
+    if(current_row == row && current_column == column) {
+      continue;
+    } 
     if(data[i].getSector() == sector && !data[i].removeFromDomain(value)) {
       return false;
     }
@@ -66,13 +77,13 @@ bool SDK_Grid::propagateSector(int sector, int value) {
 }
 
 bool SDK_Grid::propagate(int row, int column, int sector, int value){
-  if(!propagateColumn(column, value)) {
+  if(!propagateColumn(row, column, value)) {
     return false;
   }
-  if(!propagateRow(row, value)) {
+  if(!propagateRow(row, column, value)) {
     return false;
   }
-  if(!propagateSector(sector, value)){
+  if(!propagateSector(row, column, sector, value)){
     return false;
   }
   return true;

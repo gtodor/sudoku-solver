@@ -19,7 +19,7 @@ bool SDK_Domain::isEmpty() {
 
 void SDK_Domain::reduceToSingleValue(int value) {
   for (int i=0; i<9; i++) {
-    if (i != value - 1) {
+    if (i != value - 1 && domain[i] != 0) {
       domain[i] = 0;
       nonZeroValues--;
     }
